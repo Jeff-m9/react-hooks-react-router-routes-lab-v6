@@ -33,12 +33,15 @@ test("renders without any errors", () => {
   errorSpy.mockRestore();
 });
 
-test("renders 'Directors Page' inside of a <h1 />", () => {
-  render(<RouterProvider router={router}/>);
-  const h1 = screen.queryByText(/Directors Page/);
+test("renders 'Directors Page' inside of a <h1 />", async () => {
+  render(<RouterProvider router={router} />);
+
+  const h1 = await screen.findByText(/Directors Page/);
+
   expect(h1).toBeInTheDocument();
   expect(h1.tagName).toBe("H1");
 });
+
 
 test("renders each director's name", async () => {
   render(<RouterProvider router={router}/>);
@@ -60,12 +63,14 @@ test("renders a <li /> for each movie", async () => {
   }
 });
 
-test("renders the <NavBar /> component", () => {
+test("renders the <NavBar /> component", async () => {
   const router = createMemoryRouter(routes, {
-    initialEntries: ['/directors']
-  })
-  render(
-      <RouterProvider router={router}/>
-  );
-  expect(document.querySelector(".navbar")).toBeInTheDocument();
+    initialEntries: ["/directors"], // Navigate to the /directors page
+  });
+
+  render(<RouterProvider router={router} />);
+
+  // Use findByText or findByRole to confirm NavBar is rendered
+  const navbar = await screen.findByRole("navigation"); // Use findByRole for better accessibility
+  expect(navbar).toBeInTheDocument();
 });
